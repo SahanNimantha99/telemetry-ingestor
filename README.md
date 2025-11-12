@@ -85,11 +85,11 @@ npm run test
 npm run test:e2e
 ```
 <div align="center">
-<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+<img src="./docs/assets/readme/img01.png" width="10000" height="500">
 </div>
 
 <div align="center">
-<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+<img src="./docs/assets/readme/img02.png" width="10000" height="500">
 </div>
 ---
 
@@ -106,7 +106,7 @@ Invoke-WebRequest -Uri "http://localhost:3000/api/v1/telemetry" `
 -Body '{"deviceId":"dev-002","siteId":"site-A","ts":"2025-09-01T10:00:30.000Z","metrics":{"temperature":51.2,"humidity":55}}'
 ```
 <div align="center">
-<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+<img src="./docs/assets/readme/img03.png" width="10000" height="500">
 </div>
 
 ## 2️⃣ Get latest reading per device ( PowerShell)
@@ -115,9 +115,8 @@ Invoke-WebRequest -Uri "http://localhost:3000/api/v1/telemetry" `
 (Invoke-WebRequest -Uri "http://localhost:3000/api/v1/devices/dev-002/latest" -Method GET).Content | ConvertFrom-Json
 ```
 <div align="center">
-<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+<img src="./docs/assets/readme/img04.png" width="10000" height="500">
 </div>
-
 ## 3️⃣ Get site summary ( PowerShell)
 
 ```bash
@@ -127,7 +126,7 @@ $to = "2025-09-02T00:00:00.000Z"
 (Invoke-WebRequest -Uri "http://localhost:3000/api/v1/sites/site-A/summary?from=$from&to=$to" -Method GET).Content | ConvertFrom-Json
 ```
 <div align="center">
-<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+<img src="./docs/assets/readme/img05.png" width="10000" height="500">
 </div>
 
 ---
