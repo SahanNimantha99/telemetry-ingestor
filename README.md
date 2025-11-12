@@ -121,13 +121,16 @@ $to = "2025-09-02T00:00:00.000Z"
 
 ## AI Assistance
 
-- **Framework**: [NestJS](https://nestjs.com) (v10+)
-- **Language**: TypeScript
-- **Database**: [MongoDB](https://www.mongodb.com) (via Mongoose)
-- **Cache**: [Redis](https://redis.io)
-- **Validation**: `class-validator` + `class-transformer`
-- **HTTP Client**: Axios (for webhooks)
-- **Testing**: Jest, Supertest
-- **Config**: `@nestjs/config` + `.env`
+## This project was developed with the support of AI assistance to:
+
+- Plan and set up the application architecture.
+
+- Resolve errors during development.
+
+- Configure webhooks and Redis integration.
+
+- Generate multiple features and boilerplate code.
+
+- Suggest best practices and improvements for code and project structure.
 
 ---
