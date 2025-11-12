@@ -84,8 +84,13 @@ npm run test
 # E2E tests
 npm run test:e2e
 ```
-01 1 Screenshot
-02 1 Screenshot
+<div align="center">
+<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+</div>
+
+<div align="center">
+<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+</div>
 ---
 
 ---
@@ -100,14 +105,18 @@ Invoke-WebRequest -Uri "http://localhost:3000/api/v1/telemetry" `
 -Headers @{ "Content-Type" = "application/json"; "Authorization" = "Bearer secret123" } `
 -Body '{"deviceId":"dev-002","siteId":"site-A","ts":"2025-09-01T10:00:30.000Z","metrics":{"temperature":51.2,"humidity":55}}'
 ```
-1 Screenshot
+<div align="center">
+<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+</div>
 
 ## 2️⃣ Get latest reading per device ( PowerShell)
 
 ```bash
 (Invoke-WebRequest -Uri "http://localhost:3000/api/v1/devices/dev-002/latest" -Method GET).Content | ConvertFrom-Json
 ```
-2 Screenshot
+<div align="center">
+<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+</div>
 
 ## 3️⃣ Get site summary ( PowerShell)
 
@@ -117,7 +126,9 @@ $to = "2025-09-02T00:00:00.000Z"
 
 (Invoke-WebRequest -Uri "http://localhost:3000/api/v1/sites/site-A/summary?from=$from&to=$to" -Method GET).Content | ConvertFrom-Json
 ```
-3 Screenshot
+<div align="center">
+<img src="./docs/assets/readme/1.jpg" width="10000" height="500">
+</div>
 
 ---
 
