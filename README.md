@@ -84,10 +84,7 @@ npm run test
 # E2E tests
 npm run test:e2e
 ```
-<div align="center">
-<img src="./docs/assets/readme/img01.png" width="10000" height="500">
-</div>
-
+![Telemetry Screenshot 1](./img/Img01.png)
 <div align="center">
 <img src="./docs/assets/readme/img02.png" width="10000" height="500">
 </div>
