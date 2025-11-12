@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configuration from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TelemetryModule } from './telemetry/telemetry.module';
-import { HealthController } from './health/health.controller';
+
+import { Module } from '@nestjs/common';
 import Redis from 'ioredis';
+
+import configuration from './config/configuration';
+import { HealthController } from './health/health.controller';
+import { TelemetryModule } from './telemetry/telemetry.module';
 
 function getEnv(key: string, fallback?: string): string {
   const val = process.env[key] || fallback;

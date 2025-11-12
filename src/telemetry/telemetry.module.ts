@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
+
+import { MongooseModule } from '@nestjs/mongoose';
+import Redis from 'ioredis';
 import { TelemetryController } from './telemetry.controller';
 import { TelemetryService } from './telemetry.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { TelemetrySchema, Telemetry } from './schemas/telemetry.schema';
-import Redis from 'ioredis';
-import { IngestTokenGuard } from '../guards/ingest-token.guard';
+
 import configuration from '../config/configuration';
+import { IngestTokenGuard } from '../guards/ingest-token.guard';
 
 function getEnv(key: string, fallback?: string): string {
   const val = process.env[key] || fallback;

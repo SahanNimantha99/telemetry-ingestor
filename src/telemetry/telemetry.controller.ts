@@ -9,9 +9,11 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { TelemetryService } from './telemetry.service';
+
 import { IngestTelemetryDto } from './dto/ingest-telemetry.dto';
 import { IngestTokenGuard } from '../guards/ingest-token.guard';
+import { TelemetryService } from './telemetry.service';
+
 import { logger } from '../common/logger';
 
 @Controller('api/v1')

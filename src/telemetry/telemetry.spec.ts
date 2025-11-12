@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TelemetryService } from './telemetry.service';
 import { getModelToken } from '@nestjs/mongoose';
+
+import { TelemetryService } from './telemetry.service';
 
 describe('TelemetryService', () => {
   let service: TelemetryService;
@@ -24,7 +25,7 @@ describe('TelemetryService', () => {
   });
 
   it('should dedupe alerts within 60s', async () => {
-    mockRedis.get.mockResolvedValueOnce(null).mockResolvedValueOnce('1'); // first call no dedupe, second call dedup
+    mockRedis.get.mockResolvedValueOnce(null).mockResolvedValueOnce('1');
     mockRedis.set.mockResolvedValue(true);
     const dto = {
       deviceId: 'u1',
@@ -32,11 +33,9 @@ describe('TelemetryService', () => {
       ts: new Date().toISOString(),
       metrics: { temperature: 60, humidity: 10 },
     };
-    // We stub axios through changing service.alertWebhook to an invalid one to avoid real network calls
     (service as any).alertWebhook = 'https://example.invalid';
-    // call maybeSendAlert twice
     await service.maybeSendAlert(dto, 'HIGH_TEMPERATURE', 60);
     await service.maybeSendAlert(dto, 'HIGH_TEMPERATURE', 60);
-    expect(mockRedis.set).toHaveBeenCalled(); // set dedupe
+    expect(mockRedis.set).toHaveBeenCalled();
   });
 });

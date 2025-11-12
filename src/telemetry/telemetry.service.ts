@@ -1,10 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
+
+import axios from 'axios';
 import { Model } from 'mongoose';
-import { Telemetry, TelemetryDocument } from './schemas/telemetry.schema';
 import { IngestTelemetryDto } from './dto/ingest-telemetry.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { Telemetry, TelemetryDocument } from './schemas/telemetry.schema';
+
 import { latestKey, makeAlertDedupeKey, makeIngestKey } from '../utils/rate-limit';
-import axios from 'axios';
 import { logger } from '../common/logger';
 
 @Injectable()
@@ -15,9 +17,7 @@ export class TelemetryService {
     @Inject('REDIS') private readonly redis: any
   ) {}
 
-  // handle single item
   async ingestSingle(dto: IngestTelemetryDto) {
-    // Persist
     const tsDate = new Date(dto.ts);
     const doc = await new this.telemetryModel({
       deviceId: dto.deviceId,
@@ -26,7 +26,6 @@ export class TelemetryService {
       metrics: dto.metrics,
     }).save();
 
-    // cache latest
     const key = latestKey(dto.deviceId);
     await this.redis.set(
       key,
@@ -38,11 +37,8 @@ export class TelemetryService {
       })
     );
 
-    // Rate-limit ingest per device -- simple sliding: set key if not exists with TTL 1s (prevents flooding)
-    // (If you need more advanced rate limit, use Redis tokens)
     await this.redis.set(makeIngestKey(dto.deviceId), '1', 'EX', 1);
 
-    // Alert rules
     const { temperature, humidity } = dto.metrics;
     if (temperature > 50) await this.maybeSendAlert(dto, 'HIGH_TEMPERATURE', temperature);
     if (humidity > 90) await this.maybeSendAlert(dto, 'HIGH_HUMIDITY', humidity);
@@ -70,7 +66,6 @@ export class TelemetryService {
       return;
     }
 
-    // send
     try {
       await axios.post(
         this.alertWebhook,
@@ -83,7 +78,6 @@ export class TelemetryService {
         },
         { timeout: 5000 }
       );
-      // set dedupe TTL 60 seconds
       await this.redis.set(dedupeKey, '1', 'EX', 60);
       logger.info('Alert sent', { deviceId: dto.deviceId, reason });
     } catch (err: any) {
@@ -101,7 +95,6 @@ export class TelemetryService {
         /* ignore */
       }
     }
-    // fallback to mongo (latest by ts)
     const doc = await this.telemetryModel.findOne({ deviceId }).sort({ ts: -1 }).lean();
     if (!doc) return null;
     const resp = {
@@ -110,7 +103,6 @@ export class TelemetryService {
       ts: doc.ts.toISOString(),
       metrics: doc.metrics,
     };
-    // update cache
     await this.redis.set(key, JSON.stringify(resp));
     return resp;
   }

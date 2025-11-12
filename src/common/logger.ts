@@ -10,7 +10,6 @@ export const logger = {
   },
 
   middleware(req: Request, res: Response, next: NextFunction) {
-    // simple structured access log without bodies (no secrets)
     const start = Date.now();
     res.on('finish', () => {
       const meta = {
@@ -25,7 +24,6 @@ export const logger = {
   },
 };
 
-// redact known sensitive keys if present in a meta object
 function redact(obj: unknown): unknown {
   if (!obj || typeof obj !== 'object') return obj;
   const copy: Record<string, unknown> = {};
@@ -33,7 +31,6 @@ function redact(obj: unknown): unknown {
     if (['authorization', 'password', 'token', 'ingest_token'].includes(k.toLowerCase())) {
       copy[k] = 'REDACTED';
     } else {
-      // use type assertion here safely
       copy[k] = (obj as Record<string, unknown>)[k];
     }
   }

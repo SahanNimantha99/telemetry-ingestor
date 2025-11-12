@@ -7,7 +7,6 @@ export class IngestTokenGuard implements CanActivate {
     const auth = req.headers['authorization'];
     const token = process.env.INGEST_TOKEN || null;
     if (!token) {
-      // no token configured -> allow (optional)
       return true;
     }
     if (!auth || typeof auth !== 'string') throw new UnauthorizedException('Missing authorization');

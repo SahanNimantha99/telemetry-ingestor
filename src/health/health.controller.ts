@@ -1,7 +1,9 @@
 import { Controller, Get, Inject } from '@nestjs/common';
+
 import { Connection, ConnectionStates } from 'mongoose';
-import { logger } from '../common/logger';
 import { InjectConnection } from '@nestjs/mongoose';
+
+import { logger } from '../common/logger';
 
 @Controller('health')
 export class HealthController {
