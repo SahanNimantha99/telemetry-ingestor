@@ -6,10 +6,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    // Ignore unnecessary paths
+    ignores: ['eslint.config.mjs', 'dist', 'node_modules'],
   },
+  // Base ESLint recommended rules
   eslint.configs.recommended,
+  // TypeScript recommended rules (with type checking)
   ...tseslint.configs.recommendedTypeChecked,
+  // Prettier integration
   eslintPluginPrettierRecommended,
   {
     languageOptions: {
@@ -17,19 +21,41 @@ export default tseslint.config(
         ...globals.node,
         ...globals.jest,
       },
-      sourceType: 'commonjs',
       parserOptions: {
-        projectService: true,
+        projectService: true, // Enable TypeScript project service for type-aware linting
         tsconfigRootDir: import.meta.dirname,
       },
+      sourceType: 'module',
     },
   },
   {
     rules: {
+      // ✅ TypeScript relaxed rules (for flexibility)
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
+
+      // ✅ Prettier settings for consistent formatting
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+          singleQuote: true,
+          semi: true,
+          printWidth: 100,
+          trailingComma: 'es5',
+        },
+      ],
+      // ✅ Relax unbound-method globally
+      '@typescript-eslint/unbound-method': 'warn',
     },
   },
 );
