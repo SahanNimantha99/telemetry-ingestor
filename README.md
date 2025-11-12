@@ -36,31 +36,6 @@ It accepts real-time telemetry readings from IoT devices, stores them in **Mongo
 
 ---
 
-## Project Structure
-
-src/
-├── telemetry/
-│ ├── dto/
-│ │ └── create-telemetry.dto.ts
-│ ├── schemas/
-│ │ └── telemetry.schema.ts
-│ ├── telemetry.controller.ts
-│ ├── telemetry.service.ts
-│ └── telemetry.module.ts
-├── health/
-│ ├── health.controller.ts
-│ └── health.module.ts
-├── common/
-│ ├── guards/
-│ │ └── auth.guard.ts
-│ └── interceptors/
-│ └── logging.interceptor.ts
-├── config/
-│ └── configuration.ts
-├── app.module.ts
-└── main.ts
-
-
 ---
 
 ## Setup
@@ -68,55 +43,39 @@ src/
 ### 1. Clone & Install
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/SahanNimantha99/telemetry-ingestor>
 cd telemetry-ingestor
 npm install
+```
+---
 
-2. Environment Variables
-cp .env.example .env
-
+## 2. Environment Variables
 
 Edit .env with your own values:
 
-# MongoDB (Atlas or local)
-MONGO_URI=mongodb+srv://sahannimantha2233_db_user:So7NosIFrw7HdsMf@cluster0.csdakfg.mongodb.net/telemetry?retryWrites=true&w=majority
+```bash
+# MongoDB (Atlas)
+MONGO_URI=
 
-# Redis (local or hosted)
-REDIS_URL=redis://localhost:6379
+# Redis (local)
+REDIS_URL=
 
 # Alert Webhook (use https://webhook.site for testing)
-ALERT_WEBHOOK_URL=https://webhook.site/19ac7206-e2ab-4d13-a3f6-d0d881fc8b12
+ALERT_WEBHOOK_URL=
 
 # Optional: Secure ingest endpoint
-INGEST_TOKEN=secret123
+INGEST_TOKEN=
 
 # Server port
-PORT=3000
+PORT=
+```
+---
 
+## Run the App
 
-Note: MongoDB Atlas Free Tier will automatically create the telemetry database on first insert.
-Webhook Testing: Use your unique URL from webhook.site
-.
-
-Run the App
+```bash
 # Development (with auto-reload)
 npm run start:dev
-
-Quick Verification
-1️⃣ Ingest a telemetry reading
-Invoke-WebRequest -Uri "http://localhost:3000/api/v1/telemetry" `
--Method POST `
--Headers @{ "Content-Type" = "application/json"; "Authorization" = "Bearer secret123" } `
--Body '{"deviceId":"dev-002","siteId":"site-A","ts":"2025-09-01T10:00:30.000Z","metrics":{"temperature":51.2,"humidity":55}}'
-
-2️⃣ Get latest reading per device
-(Invoke-WebRequest -Uri "http://localhost:3000/api/v1/devices/dev-002/latest" -Method GET).Content | ConvertFrom-Json
-
-3️⃣ Get site summary
-$from = "2025-09-01T00:00:00.000Z"
-$to = "2025-09-02T00:00:00.000Z"
-
-(Invoke-WebRequest -Uri "http://localhost:3000/api/v1/sites/site-A/summary?from=$from&to=$to" -Method GET).Content | ConvertFrom-Json
 
 Testing
 # Unit tests
@@ -124,17 +83,53 @@ npm run test
 
 # E2E tests
 npm run test:e2e
+```
+01 1 Screenshot
+02 1 Screenshot
+---
 
-AI Assistance
+---
 
-This project used AI (ChatGPT) in the following ways:
+## Quick Verification
 
-Refactored supertest import for E2E tests to fix TypeScript errors.
+## 1️⃣ Ingest a telemetry reading ( PowerShell)
 
-Resolved ESLint/TypeScript issues (no-unsafe-assignment, unbound-method).
+```bash
+Invoke-WebRequest -Uri "http://localhost:3000/api/v1/telemetry" `
+-Method POST `
+-Headers @{ "Content-Type" = "application/json"; "Authorization" = "Bearer secret123" } `
+-Body '{"deviceId":"dev-002","siteId":"site-A","ts":"2025-09-01T10:00:30.000Z","metrics":{"temperature":51.2,"humidity":55}}'
+```
+1 Screenshot
 
-Improved Redis provider typing and factory setup in NestJS.
+## 2️⃣ Get latest reading per device ( PowerShell)
 
-Enhanced E2E assertions and error handling.
+```bash
+(Invoke-WebRequest -Uri "http://localhost:3000/api/v1/devices/dev-002/latest" -Method GET).Content | ConvertFrom-Json
+```
+2 Screenshot
 
-Structured .env setup and documentation for easy configuration.
+## 3️⃣ Get site summary ( PowerShell)
+
+```bash
+$from = "2025-09-01T00:00:00.000Z"
+$to = "2025-09-02T00:00:00.000Z"
+
+(Invoke-WebRequest -Uri "http://localhost:3000/api/v1/sites/site-A/summary?from=$from&to=$to" -Method GET).Content | ConvertFrom-Json
+```
+3 Screenshot
+
+---
+
+## AI Assistance
+
+- **Framework**: [NestJS](https://nestjs.com) (v10+)
+- **Language**: TypeScript
+- **Database**: [MongoDB](https://www.mongodb.com) (via Mongoose)
+- **Cache**: [Redis](https://redis.io)
+- **Validation**: `class-validator` + `class-transformer`
+- **HTTP Client**: Axios (for webhooks)
+- **Testing**: Jest, Supertest
+- **Config**: `@nestjs/config` + `.env`
+
+---
